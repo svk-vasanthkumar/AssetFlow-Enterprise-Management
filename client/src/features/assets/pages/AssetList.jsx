@@ -1,65 +1,67 @@
 import { useState } from 'react';
-import { useAssets } from '../api/useAssets';
+import { useAssets, useDeleteAsset } from '../api/useAssets';
 import { AddAssetModal } from '../components/AddAssetModal';
+import { AssetTable } from '../components/AssetTable'; 
 
 export const AssetList = () => {
-  // State to control modal visibility
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [editingAsset, setEditingAsset] = useState(null); // Holds data of asset being edited
+  
   const { data: assets, isLoading, isError, error } = useAssets();
+  const deleteAsset = useDeleteAsset();
 
-  if (isLoading) {
-    return (
-      <div className="p-8 flex justify-center items-center h-full">
-        <p className="text-slate-500 animate-pulse">Loading asset inventory...</p>
-      </div>
-    );
-  }
+  const handleDelete = (id) => {
+    if (window.confirm("Are you sure you want to delete this asset? This action cannot be undone.")) {
+      deleteAsset.mutate(id);
+    }
+  };
 
-  if (isError) {
-    return (
-      <div className="p-8">
-        <div className="bg-red-50 text-red-600 p-4 rounded border border-red-200">
-          Error loading assets: {error.message}
-        </div>
-      </div>
-    );
-  }
+  const handleEdit = (assetData) => {
+    setEditingAsset(assetData);
+    // You would then open your Edit Modal here: setIsEditModalOpen(true);
+    console.log("Editing:", assetData); 
+  };
+
+  if (isLoading) return <div>Loading...</div>;
+  if (isError) return <div>Error: {error.message}</div>;
+
+  const safeAssets = assets || [];
 
   return (
     <div className="p-8 max-w-7xl mx-auto w-full relative">
       <div className="flex justify-between items-center mb-6">
         <div>
           <h1 className="text-2xl font-bold text-slate-900">Asset Inventory</h1>
-          <p className="text-slate-500 text-sm mt-1">Manage and track all company hardware and software.</p>
         </div>
         
-        {/* Button to open the modal */}
         <button 
-          onClick={() => setIsModalOpen(true)}
+          onClick={() => setIsAddModalOpen(true)}
           className="bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700 transition-colors"
         >
           + Add New Asset
         </button>
       </div>
 
-      <div className="bg-white rounded-lg shadow border border-slate-200 overflow-hidden min-h-[400px] p-4">
-        {assets?.length === 0 ? (
+      <div className="bg-white rounded-lg shadow border border-slate-200 overflow-hidden min-h-[400px]">
+        {safeAssets.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-64 text-slate-500">
-            <p>No assets found. Add your first asset to get started.</p>
+            <p>No assets found.</p>
           </div>
         ) : (
-          <div className="text-slate-600 text-sm">
-            <pre>{JSON.stringify(assets, null, 2)}</pre>
-          </div>
+          <AssetTable 
+            data={safeAssets} 
+            onEdit={handleEdit} 
+            onDelete={handleDelete} 
+          />
         )}
       </div>
 
-      {/* Render the Modal */}
       <AddAssetModal 
-        isOpen={isModalOpen} 
-        onClose={() => setIsModalOpen(false)} 
+        isOpen={isAddModalOpen} 
+        onClose={() => setIsAddModalOpen(false)} 
       />
       
+      {/* <EditAssetModal isOpen={!!editingAsset} initialData={editingAsset} onClose={() => setEditingAsset(null)} /> */}
     </div>
   );
 };
