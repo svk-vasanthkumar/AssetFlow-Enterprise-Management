@@ -5,7 +5,8 @@ import {
 } from '@tanstack/react-table';
 import { useMemo } from 'react';
 
-export const AssetTable = ({ data }) => {
+// Added onEdit and onDelete props
+export const AssetTable = ({ data, onEdit, onDelete }) => {
   // 1. Define the columns for the table
   const columns = useMemo(
     () => [
@@ -44,14 +45,26 @@ export const AssetTable = ({ data }) => {
       {
         id: 'actions',
         header: 'Actions',
-        cell: () => (
-          <button className="text-blue-600 hover:text-blue-800 text-sm font-medium">
-            Edit
-          </button>
+        // Updated cell to handle both edit and delete actions
+        cell: (info) => (
+          <div className="flex gap-3">
+            <button 
+              onClick={() => onEdit(info.row.original)}
+              className="text-blue-600 hover:text-blue-800 text-sm font-medium transition-colors"
+            >
+              Edit
+            </button>
+            <button 
+              onClick={() => onDelete(info.row.original.id)}
+              className="text-red-600 hover:text-red-800 text-sm font-medium transition-colors"
+            >
+              Delete
+            </button>
+          </div>
         ),
       },
     ],
-    []
+    [onEdit, onDelete] // Added dependencies so the table updates if these functions change
   );
 
   // 2. Initialize the TanStack table instance
