@@ -27,3 +27,31 @@ export const useCreateAsset = () => {
     },
   });
 };
+// ... existing useAssets and useCreateAsset hooks
+
+export const useUpdateAsset = () => {
+  const queryClient = useQueryClient();
+  
+  return useMutation({
+    mutationFn: async ({ id, updatedData }) => {
+      const response = await api.put(`/assets/${id}`, updatedData);
+      return response.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['assets'] });
+    },
+  });
+};
+
+export const useDeleteAsset = () => {
+  const queryClient = useQueryClient();
+  
+  return useMutation({
+    mutationFn: async (id) => {
+      await api.delete(`/assets/${id}`);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['assets'] });
+    },
+  });
+};
