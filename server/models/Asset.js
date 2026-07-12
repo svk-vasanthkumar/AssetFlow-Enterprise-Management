@@ -57,7 +57,21 @@ assignedTo:{
 type:mongoose.Schema.Types.ObjectId,
 ref:"User",
 default:null
+},
+
+allocationHistory:[
+{
+type:mongoose.Schema.Types.ObjectId,
+ref:"Allocation"
 }
+],
+
+maintenanceHistory:[
+{
+type:mongoose.Schema.Types.ObjectId,
+ref:"Maintenance"
+}
+]
 
 },
 {timestamps:true});

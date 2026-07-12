@@ -6,7 +6,9 @@ const authRoutes = require("./routes/authRoutes");
 const departmentRoutes = require("./routes/departmentRoutes");
 const employeeRoutes = require("./routes/employeeRoutes");
 const assetRoutes=require("./routes/assetRoutes");
-
+const maintenanceRoutes=require("./routes/maintenanceRoutes");
+const bookingRoutes = require("./routes/bookingRoutes");
+const dashboardRoutes = require("./routes/dashboardRoutes");
 
 dotenv.config();
 
@@ -20,6 +22,10 @@ app.use("/api/auth", authRoutes);
 app.use("/api/departments", departmentRoutes);
 app.use("/api/employees", employeeRoutes);
 app.use("/api/assets",assetRoutes);
+app.use("/api/maintenance",maintenanceRoutes);
+app.use("/api/bookings", bookingRoutes);
+app.use("/api/dashboard", dashboardRoutes);
+
 
 app.get("/", (req, res) => {
   res.send("🚀 AssetFlow API Running");
