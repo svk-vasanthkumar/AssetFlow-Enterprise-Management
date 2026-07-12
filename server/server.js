@@ -3,6 +3,10 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 const connectDB = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
+const departmentRoutes = require("./routes/departmentRoutes");
+const employeeRoutes = require("./routes/employeeRoutes");
+const assetRoutes=require("./routes/assetRoutes");
+
 
 dotenv.config();
 
@@ -13,6 +17,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use("/api/auth", authRoutes);
+app.use("/api/departments", departmentRoutes);
+app.use("/api/employees", employeeRoutes);
+app.use("/api/assets",assetRoutes);
 
 app.get("/", (req, res) => {
   res.send("🚀 AssetFlow API Running");
