@@ -14,4 +14,4 @@ router.get("/departments", getDepartmentReport);
 
 router.get("/maintenance", getMaintenanceReport);
 
-module.exports = router;
+module.exports = router; 

@@ -9,6 +9,7 @@ const {
 
 router.get("/", getEmployees);
 
+
 router.put("/:id", updateEmployee);
 
 module.exports = router;
