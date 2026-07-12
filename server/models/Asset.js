@@ -64,6 +64,13 @@ allocationHistory:[
 type:mongoose.Schema.Types.ObjectId,
 ref:"Allocation"
 }
+],
+
+maintenanceHistory:[
+{
+type:mongoose.Schema.Types.ObjectId,
+ref:"Maintenance"
+}
 ]
 
 },
