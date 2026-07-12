@@ -1,21 +1,14 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { ProtectedRoute } from './features/auth/components/ProtectedRoute';
-import { LoginForm } from './features/auth/components/LoginForm';
+import { LoginPage } from './features/auth/pages/LoginPage';
+import './App.css'; // Ensure your global styles or Tailwind imports are here or in index.css
+
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         {/* Public Route */}
-        <Route path="/login" element={
-          <div className="min-h-screen flex items-center justify-center bg-gray-100">
-            <LoginForm />
-          </div>
-        } />
+        <Route path="/login" element={<LoginPage />} />
 
         {/* Protected Routes */}
         <Route element={<ProtectedRoute allowedRoles={['Admin', 'Employee']} />}>
