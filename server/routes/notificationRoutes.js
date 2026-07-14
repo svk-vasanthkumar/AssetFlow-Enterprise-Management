@@ -18,4 +18,4 @@ router.get("/",getNotifications);
 
 router.put("/:id/read",markAsRead);
 
-module.exports=router;
+module.exports=router;  
